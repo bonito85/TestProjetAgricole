@@ -8,12 +8,21 @@
     <title>Details_membres</title>
 </head>
 <body class="bg-light">
-    <div class="card"
-    <h1>{{ mymember.firstname }} {{ mymember.lastname }}</h1>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1> Details des membres de la salle</h1>
+        </div>
+        <div class="card-body">
+            <h2 class="card-title"> {{ mymember.firstname }} {{ mymember.lastname }} </h2>
+            <p class="card-text"> <strong>Telephone :</strong> {{ mymember.phone }} </p>
+            <p class="card-text"><strong>Membre inscrit depuis : </strong>{{ mymember.joined_date }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'members' %}" class="btn btn-secondary">Retour</a>
 
-<p>Telephone: {{ mymember.phone }}</p>
-<p>Memebre inscris depuis: {{ mymember.joined_date }}</p>
-
-<p>Retour <a href="/members">Members</a></p>
+        </div>
+    </div>
+    
+    
 </body>
 </html>
