@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Inscription d'un Membre</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ user_form.username|add_class:"form-control mb-2" }}
+        {{ user_form.password|add_class:"form-control mb-2" }}
+        {{ user_form.confirm_password|add_class:"form-control mb-2" }}
+        {{ membre_form.as_p }}
+        <button type="submit" name="membre" class="btn btn-primary mt-2">Rejoindre une coopérative</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .models import Member, Cooperative
+from django.contrib.auth import login
+from .forms import CooperativeRegistrationForm, MembreRegistrationForm, UserCreationForm, CooperativeForm, UserRegistrationForm, MembreForm
 
 def index(request):
     template = loader.get_template('index.html')
@@ -54,3 +56,35 @@ def details_coop(request, id):
 
     # Utilisez render pour simplifier le rendu du template
     return render(request, 'details_coop.html', context)
+
+
+
+def cooperative_inscription(request):
+    if request.method == "POST":
+        cooperative_form = CooperativeForm(request.POST)
+        if cooperative_form.is_valid():
+            cooperative = cooperative_form.save()
+            return redirect('index')
+    else:
+        cooperative_form = CooperativeForm()
+    return render(request, 'Inscriptions/cooperative_inscription.html', {'cooperative_form': cooperative_form})
+
+def membre_inscription(request):
+    if request.method == "POST":
+        user_form = UserRegistrationForm(request.POST)
+        membre_form = MembreForm(request.POST)
+        if user_form.is_valid() and membre_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+
+            membre = membre_form.save(commit=False)
+            membre.user = user
+            membre.save()
+
+            login(request, user)
+            return redirect('index')
+    else:
+        user_form = UserRegistrationForm()
+        membre_form = MembreForm()
+    return render(request, 'Inscriptions/membre_inscription.html', {'user_form': user_form, 'membre_form': membre_form})
